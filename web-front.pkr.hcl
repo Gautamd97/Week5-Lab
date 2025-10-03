@@ -30,23 +30,38 @@ build {
   name = "web-nginx"
   sources = [
     # COMPLETE ME Use the source defined above
+    "source.amazon-ebs.debian"
   ]
   
   # https://developer.hashicorp.com/packer/docs/templates/hcl_templates/blocks/build/provisioner
   provisioner "shell" {
     inline = [
+
+      "echo Installing nginx"
+      script = "scripts/install-nginx"
+
+      "echo setting up nginx"
+      script = "scripts/setup-nginx"
+
       "echo creating directories",
+
+
       # COMPLETE ME add inline scripts to create necessary directories and change directory ownership.
+
       # See nginx.conf file for root directory where files will be served.
       # Files need appropriate ownership for default user
     ]
   }
 
   provisioner "file" {
+    source = "index.html"
+    destination = "/tmp/index.html"
     # COMPLETE ME add the HTML file to your image
   }
 
   provisioner "file" {
+    source = "nginx.conf"
+    destination = "/tmp/nginx.conf"
     # COMPLETE ME add the nginx.conf file to your image
   }
 
